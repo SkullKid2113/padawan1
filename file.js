@@ -1,5 +1,6 @@
 var fs = require('fs');
-
-fs.readFile('test.txt', 'utf8', function(err, data){
-    console.log(data);
+var fileBuffer = Buffer.from(file);
+var file = ('test.txt');
+fs.readFile(file,function(err,buffer){
+    console.log(buffer);
 });

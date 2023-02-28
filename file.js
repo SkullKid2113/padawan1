@@ -1,8 +1,8 @@
-var fs = require('fs');
+let fs = require('fs');
 fs.open('test.txt', 'r', function(err, fd) {
     fs.fstat(fd, function(err, stats) {
 
-        var bufferSize=stats.size  ,
+        let bufferSize=stats.size  ,
             chunkSize=512,
             buffer=new Buffer(bufferSize),
             bytesRead = 0;
@@ -20,6 +20,6 @@ fs.open('test.txt', 'r', function(err, fd) {
     });
 });
 
-var testCallback = function(err, bytesRead, buffer){
+let testCallback = function(err, bytesRead, buffer){
     console.log('err : ' +  err);
 };

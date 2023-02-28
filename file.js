@@ -1,20 +1,25 @@
-import { open, close } from 'node:fs';
+var fs = require('fs');
+fs.open('test.txt', 'r', function(err, fd) {
+    fs.fstat(fd, function(err, stats) {
 
-open('myfile', 'r', (err, fd) => {
-  if (err) {
-    if (err.code === 'ENOENT') {
-      console.error('myfile does not exist');
-      return;
-    }
+        var bufferSize=stats.size  ,
+            chunkSize=512,
+            buffer=new Buffer(bufferSize),
+            bytesRead = 0;
 
-    throw err;
-  }
+        while (bytesRead < bufferSize) {
+            if ((bytesRead + chunkSize) > bufferSize) {
+                chunkSize = (bufferSize - bytesRead);
+            }
 
-  try {
-    readMyData(fd);
-  } finally {
-    close(fd, (err) => {
-      if (err) throw err;
+            fs.read(fd, buffer, bytesRead, chunkSize, bytesRead, testCallback);
+            bytesRead += chunkSize;
+        }
+        console.log(buffer.toString('utf8'));
+        fs.close(fd);
     });
-  }
 });
+
+var testCallback = function(err, bytesRead, buffer){
+    console.log('err : ' +  err);
+};
